@@ -1,33 +1,32 @@
-
 <body>
 
-<!-- Navigation -->
-<nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-    <div class="container topnav">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand topnav" href="#">Name</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#about">About</a>
-                </li>
-                <li>
-                    <a href="#contact">Contact</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="/">Name</a>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Item1<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Item2</a>
+            </li>
+        </ul>
     </div>
-    <!-- /.container -->
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 
@@ -39,22 +38,22 @@
             <div class="col-lg-12">
                 <div class="intro-message">
                     <div class="login">
-                    <form action="/auth/login" method="post" class="form-signin">
-                        <h3 class="form-signin-heading">Name of the application</h3>
-                        <h3 class="form-signin-heading">Please Sign In</h3>
-                        <div>
-                            <label>Username:</label>
-                            <input type="text" name="username" class="form-control"/>
-                            <br/>
-                        </div>
-                        <div>
-                            <label>Password:</label>
-                            <input type="password" name="password" class="form-control"/>
-                        </div>
-                        <div>
-                            <input type="submit" value="Login" class="btn btn-lg btn-primary btn-block" />
-                        </div>
-                    </form>
+                        <form action="/auth/login" method="post" class="form-signin">
+                            <h3 class="form-signin-heading">Name of the application</h3>
+                            <h3 class="form-signin-heading">Please Sign In</h3>
+                            <div>
+                                <label>Username:</label>
+                                <input type="text" name="username" class="form-control"/>
+                                <br/>
+                            </div>
+                            <div>
+                                <label>Password:</label>
+                                <input type="password" name="password" class="form-control"/>
+                            </div>
+                            <div>
+                                <input type="submit" value="Login" class="btn btn-lg btn-primary btn-block"/>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -73,14 +72,14 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-5 col-sm-6">
+            <div class="col">
                 <hr class="section-heading-spacer">
                 <div class="clearfix"></div>
                 <h2 class="section-heading">Heading 1<br>sub text</h2>
                 <p class="lead">Some information</p>
             </div>
-            <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                <img class="img-responsive" src="/images/picture1.jpg" alt="">
+            <div class="col">
+                <img class="img-fluid rounded" src="/images/picture1.png" alt="">
             </div>
         </div>
 
@@ -93,17 +92,17 @@
 <div class="content-section-b">
 
     <div class="container">
-
         <div class="row">
-            <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+            <div class="col">
+                <img class="img-fluid rounded" src="/images/picture2.png" alt="">
+            </div>
+            <div class="col">
                 <hr class="section-heading-spacer">
                 <div class="clearfix"></div>
                 <h2 class="section-heading">Heading 2<br>more test</h2>
                 <p class="lead">more detailed information</p>
             </div>
-            <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                <img class="img-responsive" src="/images/picture2.jpg" alt="">
-            </div>
+
         </div>
 
     </div>
@@ -117,14 +116,14 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-lg-5 col-sm-6">
+            <div class="col">
                 <hr class="section-heading-spacer">
                 <div class="clearfix"></div>
                 <h2 class="section-heading">Another heading</h2>
                 <p class="lead">Some more information</p>
             </div>
-            <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                <img class="img-responsive" src="/images/picture3.jpg" alt="">
+            <div class="col">
+                <img class="img-fluid rounded" src="/images/picture3.png" alt="">
             </div>
         </div>
 
@@ -134,7 +133,7 @@
 </div>
 <!-- /.content-section-a -->
 
-<a  name="contact"></a>
+<a name="contact"></a>
 <div class="banner">
 
     <div class="container">
@@ -143,15 +142,17 @@
             <div class="col-lg-6">
                 <h2>Contribute to this...:</h2>
             </div>
-            <div class="col-lg-6">
-                <ul class="list-inline banner-social-buttons">
-                    <li>
-                        <a href="https://twitter.com" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/gpimblott/" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
-                    </li>
-                </ul>
+            <div class="col-lg-6 ">
+<div class="float-right">
+                <a href="https://twitter.com" class="btn btn-secondary btn-lg" role="button">
+                    <i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span>
+                </a>
+
+                <a  class="btn btn-secondary btn-lg" role="button" href="https://github.com/gpimblott/">
+                    <i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span>
+                </a>
+</div>
+
             </div>
         </div>
 
@@ -167,17 +168,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="list-inline">
-                    <li>
-                        <a href="#">Home</a>
-                    </li>
-                    <li class="footer-menu-divider">&sdot;</li>
-                    <li>
-                        <a href="#about">About</a>
-                    </li>
-                    <li class="footer-menu-divider">&sdot;</li>
-                    <li>
-                        <a href="#contact">Contact</a>
-                    </li>
+                    <li class="list-inline-item"><a href="#">Home</a></li>
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item"><a href="#about">About</a></li>
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item"><a href="#contact">Contact</a></li>
                 </ul>
                 <p class="copyright text-muted small">Copyright &copy; G.Pimblott 2018. All Rights Reserved</p>
             </div>
