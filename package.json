@@ -28,7 +28,6 @@
     "passport": "latest",
     "passport-local": "latest",
     "pg": "^7.12.1",
-    "sanitize-html": "latest",
     "serve-favicon": "latest",
     "winston": "^3.2.1"
   }
