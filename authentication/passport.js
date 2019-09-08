@@ -1,5 +1,6 @@
 'use strict';
-const debug = require('debug')('example:authentication');
+
+const logger = require('../winstonLogger')(module);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -14,7 +15,7 @@ passport.serializeUser(function (user, cb) {
 passport.deserializeUser(function (id, cb) {
     users.findById(id, function (err, user) {
         if (err) {
-            debug("deserialize failed");
+            logger.info("deserialize failed");
             return cb(err);
         }
         cb(null, user);
@@ -43,7 +44,7 @@ passport.use(new LocalStrategy(
             let userHash = require('crypto').createHash('sha256').update(password).digest('base64');
 
             if (user.password != userHash) {
-                debug("Login failure due to password");
+                logger.warn("Login failure due to password");
                 return cb(null, false, { message: 'Incorrect login'});
             }
             return cb(null, user);

@@ -1,22 +1,24 @@
+'use strict';
+
+const logger = require('../winstonLogger')(module);
 const Url = require('url');
 const pg = require('pg');
 
-
 /**
- * Single class that provides DB utilities and connection pooling
+ * Standard code for connecting to a database
  */
 class DBConnection {
 
-    constructor() {
+    constructor () {
         pg.defaults.poolSize = 20;
 
         const config = DBConnection.getConnectionConfig();
 
-        console.log('creating db pool');
+        logger.info('creating db pool');
         this._pool = new pg.Pool(config);
 
         this._pool.on('error', function (err, client) {
-            console.log(err);
+            logger.error("Database Pool Error : %s", err);
         });
     }
 
@@ -27,34 +29,70 @@ class DBConnection {
      * @param done Function to call on success
      * @param error Function to call on error
      */
-    query(sql, parameters, done, error) {
-        this._pool.query(sql, parameters, (err, res) => {
-            if (err) {
-                error(err);
-                return;
-            }
-
-            done(res.rows);
+    query (sql, parameters) {
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            that._pool.query(sql, parameters, (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res.rows);
+                }
+            });
         });
     };
 
+    async queryInTransaction (sqlArray, parameterArray) {
+        const client = await this._pool.connect();
+
+        let results = [];
+        try {
+            await client.query('BEGIN')
+
+            let result = undefined;
+            for (let index in sqlArray) {
+                logger.info("executing : %s %s", sqlArray[ index ], parameterArray[ index ]);
+
+                let parameters = parameterArray[ index ];
+                if (typeof parameters === "function") {
+                    parameters = parameters( result.rows );
+                }
+
+                result = await client.query(sqlArray[ index ], parameters);
+
+                results.push(result);
+            }
+
+            await client.query('COMMIT')
+        } catch (e) {
+            logger.error("Execption caught ROlling back");
+            await client.query('ROLLBACK')
+            throw e
+        } finally {
+            client.release();
+        }
+        return results;
+    };
+
     /**
-     * Perform an insert operation on the database
+     * Perform an insertOrUpdate operation on the database
      * @param sql Statement to perform
      * @param parameters Parameters for the query
      * @param done Function to call on exit
      * @param error Error function to call on error
      */
-    insert(sql, parameters, done, error) {
-        this._pool.query(sql, parameters, (err, result) => {
-            if (err) {
-                error(err);
-                return;
-            }
-
-            done(result);
+    insertOrUpdate (sql, parameters, done, error) {
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            that._pool.query(sql, parameters, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
         });
-    };
+    }
 
     /**
      * Wrapper around delete function to delete by a set of ids
@@ -62,7 +100,7 @@ class DBConnection {
      * @param ids array of IDS to delete
      * @param done function to call on completion
      */
-    deleteByIds(tableName, ids, done) {
+    deleteByIds (tableName, ids, done) {
 
         let params = [];
         for (let i = 1; i <= ids.length; i++) {
@@ -71,18 +109,19 @@ class DBConnection {
 
         let sql = "DELETE FROM " + tableName + " WHERE id IN (" + params.join(',') + "  )";
 
-        this.query(sql, ids,
-            (result) => {
-                done(true);
-            },
-            (error) => {
-                console.log(error);
-                done(false, error);
-            });
+        this.query(sql, ids)
+            .then(
+                (result) => {
+                    done(true);
+                },
+                (error) => {
+                    logger.error(error);
+                    done(false, error);
+                });
 
     };
 
-    getAllFromTable(tableName, done, order) {
+    getAllFromTable (tableName, done, order) {
         let sql = "SELECT * FROM " + tableName;
         let params = [];
 
@@ -91,14 +130,15 @@ class DBConnection {
             params.push(order);
         }
 
-        this.query(sql, params,
-            (results) => {
-                done(results);
-            },
-            (error) => {
-                console.log(error);
-                done(null);
-            });
+        this.query(sql, params)
+            .then(
+                (results) => {
+                    done(results);
+                },
+                (error) => {
+                    logger.error(error);
+                    done(null);
+                });
     };
 
     /**
@@ -108,10 +148,11 @@ class DBConnection {
      *
      * Note : A DATABASE_URL will override individual env variables
      */
-    static getConnectionConfig() {
+    static getConnectionConfig () {
         let connectionStr = process.env.DATABASE_URL;
 
         if (undefined === connectionStr) {
+            logger.log("warn", "DATABASE_URL NOT found - Using individual env variables");
             let config = {
                 user: process.env.PGUSER,
                 password: process.env.PGPASSWORD,
@@ -123,6 +164,7 @@ class DBConnection {
 
             return config;
         } else {
+            logger.info(  "DATABASE_URL found")
             let params = Url.parse(connectionStr);
             let auth = params.auth.split(':');
             let config = {
@@ -131,18 +173,19 @@ class DBConnection {
                 host: params.hostname,
                 port: params.port,
                 database: params.pathname.split('/')[ 1 ],
-                sslmode: 'require'
+                ssl: true
             };
 
             return config;
         }
     }
 
-    static isInt(value) {
+    static isInt (value) {
         return !isNaN(value) &&
             parseInt(Number(value)) == value &&
             !isNaN(parseInt(value, 10));
     };
+
 }
 
 const instance = new DBConnection();

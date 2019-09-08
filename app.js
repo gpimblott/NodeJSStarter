@@ -1,14 +1,17 @@
+'use strict';
+
 require('dotenv').config({ path: 'process.env' });
 const passport = require('passport');
 require('./authentication/passport');
 
-const debug = require('debug')('example:server');
+// Logger setup
+const logger = require('./winstonLogger')(module);
+const morgan = require('morgan');
 
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
@@ -47,6 +50,9 @@ const sess = {
     saveUninitialized: true
 }
 
+// Define static files before passport
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Setup passport
 app.use(session(sess));
 app.use(passport.initialize());
@@ -54,11 +60,10 @@ app.use(passport.session());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Set a variable that will be available to all templates
 app.locals.someVariable = true;

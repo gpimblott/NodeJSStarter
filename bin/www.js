@@ -1,11 +1,12 @@
-#!/usr/bin/env node
+'use strict';
 
 /**
  * Module dependencies.
  */
+require('dotenv').config({ path: '../process.env' });
+const logger=require('../winstonLogger')(module);
 
 const app = require('../app');
-const debug = require('debug')('example:server');
 const http = require('http');
 
 /**
@@ -86,5 +87,5 @@ function onListening() {
     let bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Listening on %s', bind);
+    logger.info('Listening on %s', bind);
 }

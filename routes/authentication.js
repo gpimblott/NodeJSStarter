@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 
 // Setup the authentication routes
-router.get('/login', function (req, res) {
+router.get('/login', (req, res) => {
     if (req.isAuthenticated()) {
         res.redirect('/');
     } else {
