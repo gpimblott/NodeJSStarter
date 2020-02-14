@@ -1,5 +1,5 @@
 # Don't upload the real environment variables to github ;)
 /process.env
-/bin/prototyper-error.log
+/bin/application-error.log
 /node_modules/
 /.idea/
