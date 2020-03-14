@@ -15,7 +15,7 @@
   "author": "gordon-pimblott",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^13.7.1",
+    "@types/node": "^13.9.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "debug": "latest",
@@ -24,11 +24,11 @@
     "express-enforces-ssl": "latest",
     "express-handlebars": "^3.1.0",
     "express-session": "^1.17.0",
-    "helmet": "^3.21.2",
+    "helmet": "^3.21.3",
     "morgan": "latest",
     "passport": "latest",
     "passport-local": "latest",
-    "pg": "^7.18.1",
+    "pg": "^7.18.2",
     "serve-favicon": "latest",
     "winston": "^3.2.1"
   }
