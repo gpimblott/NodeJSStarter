@@ -16,7 +16,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const security = require('./authentication/security');
-const helpers = require('./lib/handlebarsHelpers')
+const helpers = require('./lib/handlebarsHelpers');
+const sassMiddleware = require('node-sass-middleware');
 
 // Routes
 const index = require('./routes/index');
@@ -50,6 +51,14 @@ const sess = {
     saveUninitialized: true
 };
 
+app.use(sassMiddleware({
+    src: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public'),
+    indentedSyntax: true, // true = .sass and false = .scss
+    sourceMap: true,
+    debug: false
+}));
+
 // Define static files before passport
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -57,6 +66,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session(sess));
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -87,5 +98,7 @@ app.use(function (err, req, res, next) {
     res.statusCode = err.status || 500;
     res.render('error');
 });
+
+
 
 module.exports = app;
